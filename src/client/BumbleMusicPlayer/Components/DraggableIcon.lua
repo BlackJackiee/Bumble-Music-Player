@@ -100,9 +100,6 @@ local DraggableIcon = function(props)
     --Creating all the properies of the final image label
     local FinalProps = {
 
-        --Setting the parent of the component
-        Parent = props.Parent,
-
         --Base Settings
         Size = Computed(function() return SizeSpring:get() end),
         Position = Computed(function() return PositionSpring:get() end),
@@ -130,6 +127,11 @@ local DraggableIcon = function(props)
             local TargetSize = IsHovering:get() == true and props.SizeMax or props.SizeMin
             TargetSize = IsHolding:get() and props.SizeMin or TargetSize
             
+            --Run the OnClick func if the ui wasnt dragged
+            if IsHolding:get() == false then
+                props.OnClick()
+            end
+
             --If the user is still hovering, set it to the hover size
             SizeState:set(TargetSize)
             
@@ -170,56 +172,56 @@ local DraggableIcon = function(props)
 end
 
 --Returning the component
--- return DraggableIcon
+return DraggableIcon
 
 
 
 --HoarceKat Setup
-return function(target)
+-- return function(target)
 
-    --Creating the DraggableIcon
-    local TestDraggableIcon = DraggableIcon {
+--     --Creating the DraggableIcon
+--     local TestDraggableIcon = DraggableIcon {
 
-        --Setting the hoarceKat parent
-        Parent = target,
+--         --Setting the hoarceKat parent
+--         Parent = target,
         
-        --Setting the type of gui
-        Type = "ImageButton",
+--         --Setting the type of gui
+--         Type = "ImageButton",
 
-        --Passing the spring parameters
-        SizeMin = UDim2.fromScale(.15,.15), --Idle Size
-        SizeMax = UDim2.fromScale(.175,.175), --Hover Size
-        SizeClicked = UDim2.fromScale(.15,.15), --Clicked Size
+--         --Passing the spring parameters
+--         SizeMin = UDim2.fromScale(.15,.15), --Idle Size
+--         SizeMax = UDim2.fromScale(.175,.175), --Hover Size
+--         SizeClicked = UDim2.fromScale(.15,.15), --Clicked Size
 
-        --Base settings
-        StartPosition = UDim2.fromScale(0,0),
+--         --Base settings
+--         StartPosition = UDim2.fromScale(0,0),
 
-        --Spring settings
-        SpringSettings = {45,0.8},
+--         --Spring settings
+--         SpringSettings = {45,0.8},
 
-        --Sizing the icon
-        Props = {
-            --Setting the base settings
-            Image = "rbxassetid://10135799398",
-            BackgroundTransparency = 1,
+--         --Sizing the icon
+--         Props = {
+--             --Setting the base settings
+--             Image = "rbxassetid://10135799398",
+--             BackgroundTransparency = 1,
 
-            --Styling the icon
+--             --Styling the icon
 
-        },
+--         },
 
-        PropChildren = {
+--         PropChildren = {
 
-            --Adding a aspect ratio constraint
-            New "UIAspectRatioConstraint" {}
+--             --Adding a aspect ratio constraint
+--             New "UIAspectRatioConstraint" {}
 
-        }
+--         }
 
-    }
+--     }
 
-    --HoarceKat destroy callback
-    return function()
-        TestDraggableIcon.Disconnect()
-         TestDraggableIcon.Icon:Destroy()
-     end
+--     --HoarceKat destroy callback
+--     return function()
+--         TestDraggableIcon.Disconnect()
+--          TestDraggableIcon.Icon:Destroy()
+--      end
 
-end
+-- end
