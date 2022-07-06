@@ -9,6 +9,16 @@
 
     "ServerScriptService": {
       "$path": "src/server"
+    },
+
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "BumbleMusicPlayer": {
+          "$path": "src/client/BumbleMusicPlayer"
+        }
+      }
     }
   }
 }
