@@ -1,16 +1,7 @@
---!strict
---Services
-local uis = game:GetService("UserInputService")
-local guis = game:GetService("GuiService")
-local runs = game:GetService("RunService")
-
---Fusion Vars
+--!strict--Fusion Vars
 local Fusion = require(script.Parent.Parent.Fusion)
 local New = Fusion.New
 local Children = Fusion.Children
-local State = Fusion.State
-local Spring = Fusion.Spring
-local OnEvent = Fusion.OnEvent
 local Computed = Fusion.Computed
 
 --Local ui settings
@@ -58,7 +49,7 @@ local MediaDisplayer = function(props)
                     return props.SecondaryColourSpring:get()
                 end),
                 ImageColor3 = Computed(function()
-                    return props.MediaData:get().Artwork ~= nil and Color3.fromRGB(255, 255, 255) or props.SecondaryColourSpring:get()
+                    return props.MediaData:get().Artwork ~= nil and Color3.fromRGB(255, 255, 255) or props.MainColourSpring:get()
                 end),
                 Image = Computed(function()
                     local Artwork = props.MediaData:get().Artwork ~= nil and props.MediaData:get().Artwork or "rbxassetid://10139426544"

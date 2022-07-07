@@ -19,7 +19,7 @@ local Computed = Fusion.Computed
 --Creating the music player
 local MusicPlayer = function(props)
     --Main Music Player States
-    local MainThemeColour = State(Color3.fromHex("FABB14"))
+    local MainThemeColour = State(Color3.fromRGB(22, 157, 172))
     local SecondaryThemeColour = State(Color3.fromRGB(255, 255, 255))
 
     --Making the colour springs
@@ -29,7 +29,7 @@ local MusicPlayer = function(props)
     local IsPlaying = State(false)
     local MediaData = State({
 
-        Artwork = "rbxassetid://10139905556",
+        Artwork = nil,
         Artist = "Mac Miller",
         Song = "It Just Doesn’t Matter"
 
@@ -56,7 +56,6 @@ local MusicPlayer = function(props)
         --Setting up the OnClick function
         OnClick = function()
             MainGuiShowing:set(not MainGuiShowing:get())
-            print(MainGuiShowing:get())
         end,
         
         --Sizing the icon
