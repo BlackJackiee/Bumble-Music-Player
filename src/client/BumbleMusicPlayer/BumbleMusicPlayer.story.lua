@@ -2,6 +2,7 @@
 --Main Music Player Components
 local Components = script.Parent.Components
 local DraggableIcon = require(Components.DraggableIcon)
+local DraggableIconModified = require(Components.DraggableIconModified)
 local MediaPlayer = require(Components.MediaPlayer)
 local MediaDisplayer = require(Components.MediaDisplayer)
 
@@ -45,7 +46,7 @@ local MusicPlayer = function(props)
         SizeMin = UDim2.fromScale(.15,.15), --Idle Size
         SizeMax = UDim2.fromScale(.175,.175), --Hover Size
         SizeClicked = UDim2.fromScale(.15,.15), --Clicked Size
-
+        
         --Base settings
         StartPosition = UDim2.fromScale(0,0),
         
@@ -55,6 +56,7 @@ local MusicPlayer = function(props)
         --Setting up the OnClick function
         OnClick = function()
             MainGuiShowing:set(not MainGuiShowing:get())
+            print(MainGuiShowing:get())
         end,
         
         --Sizing the icon
@@ -66,39 +68,39 @@ local MusicPlayer = function(props)
             ImageColor3 = Computed(function()
                 return SecondaryColourSpring:get()
             end),
-
+            
         },
-
+        
         PropChildren = {
             --Adding a aspect ratio constraint
             New "UIAspectRatioConstraint" {},
-
+            
             --Creating the inner circle
             New "ImageLabel" {
 
                 --Sizing
                 Size = UDim2.fromScale(1,1),
                 ZIndex = 6,
-
+                
                 --Styling
                 BackgroundTransparency = 1,
                 ImageColor3 = Computed(function()
                     return SecondaryColourSpring:get()
                 end),
                 Image = "rbxassetid://10140015468"
-
+                
 
             },
-
+            
             --Creating the inner circle
             New "ImageLabel" {
-
+                
                 --Sizing
                 Size = UDim2.fromScale(.9,.9),
                 Position = UDim2.fromScale(.5,.5),
                 AnchorPoint = Vector2.new(.5,.5),
                 ZIndex = 5,
-
+                
                 --Styling
                 BackgroundTransparency = 1,
                 ImageColor3 = Computed(function()
@@ -106,74 +108,63 @@ local MusicPlayer = function(props)
                 end),
                 Image = "rbxassetid://10140082494"
 
-
+                
             }
-
+            
         }
     }
 
     --Creating the MediaDisplayer
     local MediaDisplayer = MediaDisplayer {
-
-            --Setting the hoarceKat parent
-            Size = .6,
-            MainColourSpring = MainColourSpring,
-            SecondaryColourSpring = SecondaryColourSpring,
-            IsPlaying = IsPlaying,
-            MediaData = MediaData,
-            MainGuiShowing = MainGuiShowing
-            
-    }
-
-    --Creating the media controls
-    local MediaControls = MediaPlayer {
-
+        
+        --Setting the hoarceKat parent
+        Size = .6,
         MainColourSpring = MainColourSpring,
         SecondaryColourSpring = SecondaryColourSpring,
         IsPlaying = IsPlaying,
-        MainGuiShowing = MainGuiShowing
-
+        MediaData = MediaData,
+        
+    }
+    
+    --Creating the media controls
+    local MediaControls = MediaPlayer {
+        
+        MainColourSpring = MainColourSpring,
+        SecondaryColourSpring = SecondaryColourSpring,
+        IsPlaying = IsPlaying,
+        
     }
 
     --Creating the Main media player
-    local MediaPlayer = DraggableIcon {
-
+    local MediaPlayer = DraggableIconModified {
+        
         --Setting the type of gui
         Type = "ImageButton",
-
+        
         --Passing the spring parameters
         SizeMin = UDim2.fromScale(.63,.63), --Idle Size
         SizeMax = UDim2.fromScale(.66,.66), --Hover Size
         SizeClicked = UDim2.fromScale(.6,.6), --Clicked Size
-
+        SizeClosed = UDim2.fromScale(.1,.1), --Closed Size
+        RotationClosed = -20,
+        
         --Base settings
+        MainGuiShowing = MainGuiShowing,
         StartPosition = UDim2.fromScale(0,0),
-
+        
         --Spring settings
         SpringSettings = {45,0.8},
-
+        
         --Setting up the OnClick function
         OnClick = function() end,
-
+        
         --Sizing the icon
-        Props = {
-            --Setting the base settings
-            BackgroundTransparency = 1,
-
-            --Setting up the music player correctly
-            Parent = props.Parent,
-
-        },
+        Props = {},
         
         PropChildren = {
-            --Adding a aspect ratio constraint
-            New "UIAspectRatioConstraint" {},
-            
             --Creating all the music player components
-            --Creating the Media Displayer
-            MediaDisplayer = MediaDisplayer,
-            --Creating the media controls
-            MediaControls = MediaControls,
+            MediaDisplayer = MediaDisplayer,--Creating the Media Displayer
+            MediaControls = MediaControls,--Creating the media controls
         },
     }
 
@@ -214,9 +205,7 @@ return function(target)
 
     --Creating the music player
     local MusicPlayer = MusicPlayer {
-
         Parent = target,
-
     }
 
     --Returning the destroy function

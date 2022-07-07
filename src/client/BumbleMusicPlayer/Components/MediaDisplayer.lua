@@ -29,9 +29,6 @@ local MediaDisplayer = function(props)
     return New "Frame" {
 
         --Setting the size and position of the MediaDisplayer
-        Visible = Computed(function() 
-            return props.MainGuiShowing:get()
-        end),
         Size = UDim2.fromScale(props.Size, props.Size),
         Position = UDim2.fromScale(.5,.5),
         AnchorPoint = Vector2.new(.5,.5),

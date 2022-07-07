@@ -217,9 +217,6 @@ local MediaPlayer = function(props)
     return New "Frame" {
     
     --Setting the size and position of the background
-    Visible = Computed(function() 
-        return props.MainGuiShowing:get()
-    end),
     Size = UDim2.fromScale(.7,.7),
     Position = UDim2.fromScale(.5,.83),
     AnchorPoint = Vector2.new(.5,.5),
