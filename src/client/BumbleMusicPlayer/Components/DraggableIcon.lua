@@ -1,7 +1,6 @@
 --!strict
 --Services
 local uis = game:GetService("UserInputService")
-local guis = game:GetService("GuiService")
 local runs = game:GetService("RunService")
 
 --Fusion Vars
@@ -12,6 +11,9 @@ local State = Fusion.State
 local Spring = Fusion.Spring
 local OnEvent = Fusion.OnEvent
 local Computed = Fusion.Computed
+
+--Viewport info
+local ViewportSize = workspace.CurrentCamera.ViewportSize
 
 --Local gui settings
 local guiSettings = {
@@ -38,14 +40,12 @@ local DraggableIcon = function(props)
 
     --Function to move the position of the icon to the pos of the mouse
     local function SetPosToMousePosition()
-        --Getting the mouse position in 2d
-        local mousePos = uis:GetMouseLocation() - Vector2.new(0, guis:GetGuiInset().Y)
-
-        --Getting the size of the gui
-        local halfGui = Vector2.new(SizeSpring:get().X.Scale/2,SizeSpring:get().Y.Scale/2)
-
-        --Setting the position of icon to folow
-        PositionState:set(UDim2.new(-halfGui.X, mousePos.X, -halfGui.Y, mousePos.Y))
+        --Converting the mouse pos to scale
+        local MouseX = uis:GetMouseLocation().X / ViewportSize.X
+        local MouseY = uis:GetMouseLocation().Y / ViewportSize.Y
+ 
+         --Setting the position of icon to folow
+         PositionState:set(UDim2.fromScale(MouseX,MouseY))
     end
 
     --Storing any connections used
@@ -102,6 +102,7 @@ local DraggableIcon = function(props)
 
         --Base Settings
         Size = Computed(function() return SizeSpring:get() end),
+        AnchorPoint = Vector2.new(.5,.5),
         Position = Computed(function() return PositionSpring:get() end),
 
         --Connecting all the size events

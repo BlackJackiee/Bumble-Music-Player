@@ -40,9 +40,6 @@ local VolumeButton = function(props)
     --Creating the Draggable ImageButton
     return New "ImageButton" {
 
-        --Setting the base props
-        Parent = props.Parent,
-
         --Base Settings
         Size = Computed(function() return SizeSpring:get() end),
         AnchorPoint = Vector2.new(.5,.5),
@@ -447,6 +444,7 @@ local function VolumeController(props)
         Size = props.Size,
 
         --Styling the main frame
+        BackgroundTransparency = 1,
         BackgroundColor3 = Color3.fromRGB(0, 0, 0),
 
         --Creating all the children
