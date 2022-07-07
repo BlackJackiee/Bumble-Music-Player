@@ -7,6 +7,7 @@ local MediaPlayer = require(Components.MediaPlayer)
 local MediaDisplayer = require(Components.MediaDisplayer)
 local VolumeController = require(Components.VolumeController)
 local PaletteSelector = require(Components.PaletteSelector)
+local MusicPlayer = require(Components.MusicPlayer)
 
 --Fusion Vars
 local Fusion = require(script.Parent.Fusion)
@@ -21,8 +22,8 @@ local Computed = Fusion.Computed
 --Creating the music player
 local MusicPlayer = function(props)
     --Main Music Theme States
-    local MainThemeColour = State(Color3.fromHex("000000"))
-    local SecondaryThemeColour = State(Color3.fromHex("FFFFFF"))
+    local MainThemeColour = State(Color3.fromHex("FFFFFF"))
+    local SecondaryThemeColour = State(Color3.fromHex("000000"))
     
     --Making the colour springs
     local MainColourSpring = Spring(MainThemeColour,2,.9)
@@ -31,16 +32,26 @@ local MusicPlayer = function(props)
     --Main Music Player States
     local Volume = State(.5)
     local IsVolumePanelOn = State(false)
-    local IsPaletteOpen = State(true)
-    local MainGuiShowing = State(true)
+    local IsPaletteOpen = State(false)
+    local MainGuiShowing = State(false)
     local IsPlaying = State(false)
     local MediaData = State({
 
         Artwork = nil,
-        Artist = "Mac Miller",
-        Song = "It Just Doesn’t Matter"
+        Artist = "",
+        Song = "",
+        SoundId = 0,
 
     })
+
+    --Creating the music player
+    local MusicPlayer = MusicPlayer {
+
+        Volume = Volume,
+        IsPlaying = IsPlaying,
+        MediaData = MediaData,
+
+    }
 
     --Creating the MediaDisplayer
     local MediaDisplayer = MediaDisplayer {
@@ -57,10 +68,16 @@ local MusicPlayer = function(props)
     --Creating the media controls
     local MediaControls = MediaPlayer {
         
+        --Base props
         MainColourSpring = MainColourSpring,
         SecondaryColourSpring = SecondaryColourSpring,
         IsPlaying = IsPlaying,
         MainGuiShowing = MainGuiShowing,
+        
+
+        --Setting up the functions
+        Skip = MusicPlayer.Skip,
+        Previous = MusicPlayer.Previous
         
     }
 
@@ -208,8 +225,6 @@ local MusicPlayer = function(props)
         }
     }
 
-
-
     --Making the Main Music Player Frame
     return {
         Gui = New "Frame" {
@@ -236,26 +251,27 @@ local MusicPlayer = function(props)
         MediaDisplayer:Destroy()
         MediaPlayer.Disconnect()
         MainIcon.Disconnect()
+        MusicPlayer.Destroy()
     end
 
 }
 end
 
-
+return MusicPlayer
 
 
 --HoarceKat Setup
-return function(target)
+-- return function(target)
 
-    --Creating the music player
-    local MusicPlayer = MusicPlayer {
-        Parent = target,
-    }
+--     --Creating the music player
+--     local MusicPlayer = MusicPlayer {
+--         Parent = target,
+--     }
 
-    --Returning the destroy function
-    return function()
-        MusicPlayer.Destroy()
-        MusicPlayer.Gui:Destroy()
-    end
+--     --Returning the destroy function
+--     return function()
+--         MusicPlayer.Destroy()
+--         MusicPlayer.Gui:Destroy()
+--     end
 
-end
+-- end

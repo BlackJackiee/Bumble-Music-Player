@@ -191,7 +191,7 @@ local PlayButton = function(props)
                 end),
                 BackgroundTransparency = 1,
                 Image = Computed(function()
-                    return props.IsPlaying:get() and "rbxassetid://10138901421" or "rbxassetid://10139041489"
+                    return props.IsPlaying:get() and "rbxassetid://10139041489" or "rbxassetid://10138901421"
                 end)
 
             },
@@ -245,7 +245,6 @@ local MediaPlayer = function(props)
             --Setting the OnClick func
             OnClick = function()
                 props.IsPlaying:set(not props.IsPlaying:get())
-                print("Play")
             end
             
         },
@@ -260,9 +259,7 @@ local MediaPlayer = function(props)
             Rotation = 0,
             
             --Setting the OnClick func
-            OnClick = function()
-                print("Previous")
-            end
+            OnClick = props.Previous
             
         },
         
@@ -275,9 +272,7 @@ local MediaPlayer = function(props)
             Rotation = 180,
             
             --Setting the OnClick func
-            OnClick = function()
-                print("Next")
-            end
+            OnClick = props.Skip
             
         },
 

@@ -277,7 +277,6 @@ local function GetPaletteItems(props)
             --Setting the OnClick function
             OnClick = function()
                 props.SelectionColourState:set(Colour)
-                print(Colour)
             end
             
 
