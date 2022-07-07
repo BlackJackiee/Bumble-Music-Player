@@ -106,7 +106,7 @@ local DraggableIcon = function(props)
     local FinalProps = {
 
         --Base Settings
-        Size = UDim2.fromScale(.5,.5),
+        Size = UDim2.fromScale(.3,.3),
         Position = UDim2.fromScale(.5,.5),
         AnchorPoint = Vector2.new(.5,.5),
         BackgroundTransparency = 1,

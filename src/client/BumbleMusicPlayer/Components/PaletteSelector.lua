@@ -15,7 +15,7 @@ local uiSettings = {
 
 }
 
-local ThemeColours = {Color3.fromHex("FABB14"),Color3.fromHex("E8324D"),Color3.fromHex("0F40A1"),Color3.fromHex("FFFFFF"),Color3.fromHex("000000")}
+local ThemeColours = {Color3.fromHex("FABB14"),Color3.fromHex("E8324D"),Color3.fromHex("511CE3"),Color3.fromHex("FFFFFF"),Color3.fromHex("000000")}
 
 
 --Creating the PaletteButton component
@@ -301,6 +301,9 @@ local Palettes = function(props)
         end),20,.7),
 
         --Styling
+        Visible = Computed(function()
+            return props.MenuSelection:get() == props.Id
+        end),
         BackgroundTransparency = 1,
 
         --Creating all the palette items
@@ -333,7 +336,8 @@ end
 --Creaint the palette selection menu
 local SelectionMenu = function(props)
     --Main gui settings
-    local OpenSize,CloseSize = UDim2.fromScale(.85,.8),UDim2.fromScale(.85,0)
+    local OpenSize,CloseSize = UDim2.fromScale(.85,.8),UDim2.fromScale(0,0)
+
 
     --Creating the selection menu
     return New "Frame" {
@@ -363,14 +367,14 @@ local SelectionMenu = function(props)
 
                 --Styling
                 BackgroundTransparency = 1,
-                ClipsDescendants = true,
+                ClipsDescendants = false,
 
                 --Adding the palettes
                 [Children] = {
                     Primary = Palettes {
                         
                     --Base props
-                    EndingPosition = -1,
+                    EndingPosition = .4,
                     Id = "P",
                     SelectionColourState = props.MainColourState,
                         
@@ -389,7 +393,7 @@ local SelectionMenu = function(props)
                     Secondary = Palettes {
                         
                         --Base props
-                        EndingPosition = 1.5,
+                        EndingPosition = .6,
                         Id = "S",
                         SelectionColourState = props.SecondaryColourState,
                             
@@ -435,17 +439,17 @@ local PaletteSelector = function(props)
     local MenuSelection = State("P") --The menu the user is on
 
     --Main gui settings
-    local OpenSize,CloseSize = UDim2.fromScale(.6,.3),UDim2.fromScale(.6,0)
+    local OpenSize,CloseSize = UDim2.fromScale(.55,.25),UDim2.fromScale(0,0)
 
     --Creating the palette selector
     return New "Frame" {
 
         --Base Props
-        Position = UDim2.fromScale(.31,.5),
-        AnchorPoint = Vector2.new(0,.5),
+        Position = UDim2.fromScale(.56,.5),
+        AnchorPoint = Vector2.new(0.5,.5),
         Size = Spring(Computed(function()
             return props.IsPaletteOpen:get() and OpenSize or CloseSize
-        end),20,.7),
+        end),20,1),
 
         --Styling the PaletteSelector
         BackgroundColor3 = Spring(Computed(function()
@@ -535,9 +539,9 @@ local function PaletteUi(props)
     local PaletteBttn = PaletteButton {
 
         --Passing the spring parameters
-        SizeMin = UDim2.fromScale(.25,.25), --Idle Size
-        SizeMax = UDim2.fromScale(.3,.3), --Hover Size
-        SizeClicked = UDim2.fromScale(.23,.23), --Clicked Size
+        SizeMin = UDim2.fromScale(.36,.36), --Idle Size
+        SizeMax = UDim2.fromScale(.41,.41), --Hover Size
+        SizeClicked = UDim2.fromScale(.34,.34), --Clicked Size
 
         --Base settings
         Position = UDim2.fromScale(.15,.5),
@@ -576,13 +580,13 @@ local function PaletteUi(props)
         Size = props.Size,
 
         --Styling the main frame
-        BackgroundTransparency = 0,
+        BackgroundTransparency = 1,
         BackgroundColor3 = Color3.fromRGB(0, 0, 0),
 
         --Creating all the children
         [Children] = {
             --Adding a aspect ratio constraint
-            New "UIAspectRatioConstraint" {
+            Aspect = New "UIAspectRatioConstraint" {
                 AspectRatio = 2
             },
 

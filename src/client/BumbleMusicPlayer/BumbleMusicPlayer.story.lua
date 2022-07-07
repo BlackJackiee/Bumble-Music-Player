@@ -6,6 +6,7 @@ local DraggableIconModified = require(Components.DraggableIconModified)
 local MediaPlayer = require(Components.MediaPlayer)
 local MediaDisplayer = require(Components.MediaDisplayer)
 local VolumeController = require(Components.VolumeController)
+local PaletteSelector = require(Components.PaletteSelector)
 
 --Fusion Vars
 local Fusion = require(script.Parent.Fusion)
@@ -20,8 +21,8 @@ local Computed = Fusion.Computed
 --Creating the music player
 local MusicPlayer = function(props)
     --Main Music Theme States
-    local MainThemeColour = State(Color3.fromRGB(81, 28, 227))
-    local SecondaryThemeColour = State(Color3.fromRGB(0, 0, 0))
+    local MainThemeColour = State(Color3.fromHex("000000"))
+    local SecondaryThemeColour = State(Color3.fromHex("FFFFFF"))
     
     --Making the colour springs
     local MainColourSpring = Spring(MainThemeColour,2,.9)
@@ -30,6 +31,7 @@ local MusicPlayer = function(props)
     --Main Music Player States
     local Volume = State(.5)
     local IsVolumePanelOn = State(false)
+    local IsPaletteOpen = State(true)
     local MainGuiShowing = State(true)
     local IsPlaying = State(false)
     local MediaData = State({
@@ -75,6 +77,22 @@ local MusicPlayer = function(props)
         Volume = Volume
     }
 
+    --Making the palette selector
+    local Palette = PaletteSelector {
+            -- Base settings
+            Size = UDim2.fromScale(1.1,1),
+            Position = UDim2.fromScale(1.225,.55),
+            
+            --Passing the colour springs
+            MainColourSpring = MainColourSpring,
+            SecondaryColourSpring = SecondaryColourSpring,
+
+            --Passing all the required states
+            IsPaletteOpen = IsPaletteOpen,
+            MainColourState = MainThemeColour,
+            SecondaryColourState = SecondaryThemeColour,
+    }
+
     --Creating the Main media player
     local MediaPlayer = DraggableIconModified {
         
@@ -82,9 +100,9 @@ local MusicPlayer = function(props)
         Type = "ImageButton",
         
         --Passing the spring parameters
-        SizeMin = UDim2.fromScale(1.3,1.3), --Idle Size
-        SizeMax = UDim2.fromScale(1.6,1.6), --Hover Size
-        SizeClicked = UDim2.fromScale(1.2,1.2), --Clicked Size
+        SizeMin = UDim2.fromScale(2.3,2.3), --Idle Size
+        SizeMax = UDim2.fromScale(2.5,2.5), --Hover Size
+        SizeClicked = UDim2.fromScale(2,2), --Clicked Size
         RotationClosed = -20,
         
         --Base settings
@@ -104,7 +122,8 @@ local MusicPlayer = function(props)
             --Creating all the music player components
             MediaDisplayer = MediaDisplayer,--Creating the Media Displayer
             MediaControls = MediaControls,--Creating the media controls
-            VolumeController = VolumeController,--Creating the Volume Controller
+            VolumeController = VolumeController.VolumeController,--Creating the Volume Controller
+            PaletteSelector = Palette.PaletteUi, --Creating the palette selector
         },
     }
 
@@ -131,6 +150,7 @@ local MusicPlayer = function(props)
         OnClick = function()
             MainGuiShowing:set(not MainGuiShowing:get())
             IsVolumePanelOn:set(false)
+            IsPaletteOpen:set(false)
         end,
         
         --Sizing the icon
@@ -189,6 +209,7 @@ local MusicPlayer = function(props)
     }
 
 
+
     --Making the Main Music Player Frame
     return {
         Gui = New "Frame" {
@@ -210,6 +231,7 @@ local MusicPlayer = function(props)
     },
 
     Destroy = function()
+        Palette.PaletteUi:Destroy()
         VolumeController.Disconnect()
         MediaDisplayer:Destroy()
         MediaPlayer.Disconnect()

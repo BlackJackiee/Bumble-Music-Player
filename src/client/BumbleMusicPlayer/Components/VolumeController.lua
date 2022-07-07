@@ -88,7 +88,9 @@ local VolumeButton = function(props)
             New "ImageLabel" {
 
                 --Sizing
-                Size = UDim2.fromScale(1,1),
+                Size = UDim2.fromScale(.8,.8),
+                AnchorPoint = Vector2.new(.5,.5),
+                Position = UDim2.fromScale(.5,.5),
                 ZIndex = 6,
                 
                 --Styling
