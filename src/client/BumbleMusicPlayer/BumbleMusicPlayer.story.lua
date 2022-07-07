@@ -20,8 +20,8 @@ local Computed = Fusion.Computed
 --Creating the music player
 local MusicPlayer = function(props)
     --Main Music Theme States
-    local MainThemeColour = State(Color3.fromRGB(22, 157, 172))
-    local SecondaryThemeColour = State(Color3.fromRGB(255, 255, 255))
+    local MainThemeColour = State(Color3.fromRGB(81, 28, 227))
+    local SecondaryThemeColour = State(Color3.fromRGB(0, 0, 0))
     
     --Making the colour springs
     local MainColourSpring = Spring(MainThemeColour,2,.9)
@@ -40,6 +40,74 @@ local MusicPlayer = function(props)
 
     })
 
+    --Creating the MediaDisplayer
+    local MediaDisplayer = MediaDisplayer {
+        
+        --Setting the hoarceKat parent
+        Size = .6,
+        MainColourSpring = MainColourSpring,
+        SecondaryColourSpring = SecondaryColourSpring,
+        IsPlaying = IsPlaying,
+        MediaData = MediaData,
+        
+    }
+    
+    --Creating the media controls
+    local MediaControls = MediaPlayer {
+        
+        MainColourSpring = MainColourSpring,
+        SecondaryColourSpring = SecondaryColourSpring,
+        IsPlaying = IsPlaying,
+        MainGuiShowing = MainGuiShowing,
+        
+    }
+
+    local VolumeController = VolumeController {
+        
+        --Base settings
+        Size = UDim2.fromScale(.8,1),
+        Position = UDim2.fromScale(1.07,.32),
+        MainColourSpring = MainColourSpring,
+        SecondaryColourSpring = SecondaryColourSpring,
+
+        --Main Player states
+        IsVolumePanelOn = IsVolumePanelOn,
+        Volume = Volume
+    }
+
+    --Creating the Main media player
+    local MediaPlayer = DraggableIconModified {
+        
+        --Setting the type of gui
+        Type = "ImageButton",
+        
+        --Passing the spring parameters
+        SizeMin = UDim2.fromScale(1.3,1.3), --Idle Size
+        SizeMax = UDim2.fromScale(1.6,1.6), --Hover Size
+        SizeClicked = UDim2.fromScale(1.2,1.2), --Clicked Size
+        RotationClosed = -20,
+        
+        --Base settings
+        MainGuiShowing = MainGuiShowing,
+        StartPosition = UDim2.fromScale(.2,.4),
+        
+        --Spring settings
+        SpringSettings = {45,0.8},
+        
+        --Setting up the OnClick function
+        OnClick = function() end,
+        
+        --Sizing the icon
+        Props = {},
+        
+        PropChildren = {
+            --Creating all the music player components
+            MediaDisplayer = MediaDisplayer,--Creating the Media Displayer
+            MediaControls = MediaControls,--Creating the media controls
+            VolumeController = VolumeController,--Creating the Volume Controller
+        },
+    }
+
     --Creating the draggable icon
     local MainIcon =  DraggableIcon {
 
@@ -56,6 +124,8 @@ local MusicPlayer = function(props)
         
         --Spring settings
         SpringSettings = {45,0.8},
+        MainGuiShowing = MainGuiShowing,
+        PositionSpring = MediaPlayer.PositionSpring,
         
         --Setting up the OnClick function
         OnClick = function()
@@ -116,73 +186,6 @@ local MusicPlayer = function(props)
             }
             
         }
-    }
-
-    --Creating the MediaDisplayer
-    local MediaDisplayer = MediaDisplayer {
-        
-        --Setting the hoarceKat parent
-        Size = .6,
-        MainColourSpring = MainColourSpring,
-        SecondaryColourSpring = SecondaryColourSpring,
-        IsPlaying = IsPlaying,
-        MediaData = MediaData,
-        
-    }
-    
-    --Creating the media controls
-    local MediaControls = MediaPlayer {
-        
-        MainColourSpring = MainColourSpring,
-        SecondaryColourSpring = SecondaryColourSpring,
-        IsPlaying = IsPlaying,
-        
-    }
-
-    local VolumeController = VolumeController {
-        
-        --Base settings
-        Size = UDim2.fromScale(.8,1),
-        Position = UDim2.fromScale(1.07,.32),
-        MainColourSpring = MainColourSpring,
-        SecondaryColourSpring = SecondaryColourSpring,
-
-        --Main Player states
-        IsVolumePanelOn = IsVolumePanelOn,
-        Volume = Volume
-    }
-
-    --Creating the Main media player
-    local MediaPlayer = DraggableIconModified {
-        
-        --Setting the type of gui
-        Type = "ImageButton",
-        
-        --Passing the spring parameters
-        SizeMin = UDim2.fromScale(1.3,1.3), --Idle Size
-        SizeMax = UDim2.fromScale(1.6,1.6), --Hover Size
-        SizeClicked = UDim2.fromScale(1.2,1.2), --Clicked Size
-        RotationClosed = -20,
-        
-        --Base settings
-        MainGuiShowing = MainGuiShowing,
-        StartPosition = UDim2.fromScale(.2,.4),
-        
-        --Spring settings
-        SpringSettings = {45,0.8},
-        
-        --Setting up the OnClick function
-        OnClick = function() end,
-        
-        --Sizing the icon
-        Props = {},
-        
-        PropChildren = {
-            --Creating all the music player components
-            MediaDisplayer = MediaDisplayer,--Creating the Media Displayer
-            MediaControls = MediaControls,--Creating the media controls
-            VolumeController = VolumeController,--Creating the Volume Controller
-        },
     }
 
 

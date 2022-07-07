@@ -213,11 +213,16 @@ end
 
 --Creating the Media PLayer component
 local MediaPlayer = function(props)
+    --Setting the min and max sizes
+    local MinSize, MaxSize = UDim2.fromScale(0,.7),UDim2.fromScale(.7,.7)
+
     --Creating and returning the Media Player
     return New "Frame" {
     
     --Setting the size and position of the background
-    Size = UDim2.fromScale(.7,.7),
+    Size = Spring(Computed(function()
+        return props.MainGuiShowing:get() and MaxSize or MinSize
+    end),25,.5),
     Position = UDim2.fromScale(.5,.83),
     AnchorPoint = Vector2.new(.5,.5),
     

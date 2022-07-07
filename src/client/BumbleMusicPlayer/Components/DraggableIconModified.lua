@@ -183,6 +183,9 @@ local DraggableIcon = function(props)
 
         },
 
+        --Returning the position spring
+        PositionSpring = PositionSpring,
+
         --Returning a destroy function (Must call to dissconnect any connections)
         Disconnect = function()
             for _,Connection in pairs(Connections) do

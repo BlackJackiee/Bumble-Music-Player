@@ -104,6 +104,26 @@ local DraggableIcon = function(props)
         Size = Computed(function() return SizeSpring:get() end),
         AnchorPoint = Vector2.new(.5,.5),
         Position = Computed(function() return PositionSpring:get() end),
+        
+        --Making the icon point at the main gui
+        Rotation = Spring(Computed(function()
+            if props.MainGuiShowing:get() then
+                    --Converting all the positions into vec2's
+                local Pos1 = Vector2.new(PositionSpring:get().X.Scale,PositionSpring:get().Y.Scale)
+                local Pos2 = Vector2.new(props.PositionSpring:get().X.Scale,props.PositionSpring:get().Y.Scale)
+        
+                --Getting the rotational angle
+                local Angle = math.atan2(Pos1.X - Pos2.X, Pos1.Y - Pos2.Y )
+                local ConvertedAngle = ((Angle / math.pi) * 180)
+
+                --Returning the rotation
+                return -ConvertedAngle
+            else
+                --If the maigui is closed, return 0 rotation
+                return 0
+            end
+         end),20,.5),
+
 
         --Connecting all the size events
         [OnEvent "MouseEnter"] = function()
