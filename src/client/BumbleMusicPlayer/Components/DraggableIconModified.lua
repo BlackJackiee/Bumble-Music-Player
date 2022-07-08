@@ -12,9 +12,6 @@ local Spring = Fusion.Spring
 local OnEvent = Fusion.OnEvent
 local Computed = Fusion.Computed
 
---Viewport info
-local ViewportSize = workspace.CurrentCamera.ViewportSize
-
 --Local gui settings
 local guiSettings = {
     --Timing Settings
@@ -46,8 +43,8 @@ local DraggableIcon = function(props)
     --Function to move the position of the icon to the pos of the mouse
     local function SetPosToMousePosition()
        --Converting the mouse pos to scale
-       local MouseX = uis:GetMouseLocation().X / ViewportSize.X
-       local MouseY = uis:GetMouseLocation().Y / ViewportSize.Y
+       local MouseX = uis:GetMouseLocation().X / workspace.CurrentCamera.ViewportSize.X
+       local MouseY = uis:GetMouseLocation().Y / workspace.CurrentCamera.ViewportSize.Y
 
         --Setting the position of icon to folow
         PositionState:set(UDim2.fromScale(MouseX,MouseY))

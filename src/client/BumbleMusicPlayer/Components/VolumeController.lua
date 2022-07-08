@@ -12,9 +12,6 @@ local Spring = Fusion.Spring
 local OnEvent = Fusion.OnEvent
 local Computed = Fusion.Computed
 
---Viewport info
-local ViewportSize = workspace.CurrentCamera.ViewportSize
-
 --Global vars
 local VolumeRange = {.2,.97} --The range used by the volume panel
 
@@ -144,7 +141,7 @@ local DraggableButton = function(props)
     --Volume Adjusting functions
     local function AdjustVolume()
         --Converting the mouse pos to scale
-        local MouseX = math.clamp(uis:GetMouseLocation().X / ViewportSize.X,VolumeRange[1],VolumeRange[2])
+        local MouseX = math.clamp(uis:GetMouseLocation().X / workspace.CurrentCamera.ViewportSize.X,VolumeRange[1],VolumeRange[2])
 
         --Calculating the new volume
         local Volume = (MouseX - VolumeRange[1]) / (VolumeRange[2] - VolumeRange[1])
