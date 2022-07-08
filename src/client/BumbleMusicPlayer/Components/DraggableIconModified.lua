@@ -127,23 +127,25 @@ local DraggableIcon = function(props)
             SizeState:set(props.SizeClicked)
             task.spawn(ListenForHold) --Begin listening for icon hold
         end,
-        [OnEvent "MouseButton1Up"] = function()
-            IsClicked:set(false)
+        [OnEvent "InputEnded"] = function(InputObject:InputObject)
+            if InputObject.UserInputType == Enum.UserInputType.MouseButton1 then
+                IsClicked:set(false)
 
-            --Getting the new size target
-            local TargetSize = IsHovering:get() == true and props.SizeMax or props.SizeMin
-            TargetSize = IsHolding:get() and props.SizeMin or TargetSize
-            
-            --Run the OnClick func if the ui wasnt dragged
-            if IsHolding:get() == false then
-                props.OnClick()
+                --Getting the new size target
+                local TargetSize = IsHovering:get() == true and props.SizeMax or props.SizeMin
+                TargetSize = IsHolding:get() and props.SizeMin or TargetSize
+                
+                --Run the OnClick func if the ui wasnt dragged
+                if IsHolding:get() == false then
+                    props.OnClick()
+                end
+
+                --If the user is still hovering, set it to the hover size
+                SizeState:set(TargetSize)
+                
+                --Stopping the icon from following the mouse button
+                StopMouseFollow()
             end
-
-            --If the user is still hovering, set it to the hover size
-            SizeState:set(TargetSize)
-            
-            --Stopping the icon from following the mouse button
-            StopMouseFollow()
         end,
 
         --Creating all the children
