@@ -132,6 +132,7 @@ local MusicPlayer = function(props)
         --Passing all the required states
         IsPaletteOpen = IsPaletteOpen,
         IsVolumePanelOn = IsVolumePanelOn,
+        PlaybackLoudness = MusicPlayer.PlaybackLoudness,
         
         --Sizing the icon
         Props = {},
@@ -258,21 +259,21 @@ local MusicPlayer = function(props)
 }
 end
 
--- return MusicPlayer
+return MusicPlayer
 
 
--- HoarceKat Setup
-return function(target)
+-- -- HoarceKat Setup
+-- return function(target)
 
-    --Creating the music player
-    local MusicPlayer = MusicPlayer {
-        Parent = target,
-    }
+--     --Creating the music player
+--     local MusicPlayer = MusicPlayer {
+--         Parent = target,
+--     }
 
-    --Returning the destroy function
-    return function()
-        MusicPlayer.Destroy()
-        MusicPlayer.Gui:Destroy()
-    end
+--     --Returning the destroy function
+--     return function()
+--         MusicPlayer.Destroy()
+--         MusicPlayer.Gui:Destroy()
+--     end
 
-end
+-- end

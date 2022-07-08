@@ -1,9 +1,9 @@
 --!strict
---Services
-local ss = game:GetService("SoundService")
 --Fusion Vars
 local Fusion = require(script.Parent.Parent.Fusion)
 local New = Fusion.New
+local OnChange = Fusion.OnChange
+local State = Fusion.State
 local Computed = Fusion.Computed
 
 --Making the music player component
@@ -42,6 +42,9 @@ local MusicPlayer = function(props)
         }
     }
 
+    --Creating all the required states
+    local PlaybackLoudness = State(0)
+
     --Making the sound instance that will play all the music 
     local Sound = New "Sound" {
 
@@ -51,10 +54,21 @@ local MusicPlayer = function(props)
             return props.Volume:get()
         end),
 
+        --Setting the sound id
         SoundId = Computed(function()
             return "rbxasset://sounds/"..tostring(props.MediaData:get().SoundId)
         end),
     }
+
+    --Updating the playback loudness state
+    local prevLoudness = 0
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if Sound.PlaybackLoudness ~= prevLoudness then
+            prevLoudness = Sound.PlaybackLoudness
+            PlaybackLoudness:set(Sound.PlaybackLoudness)
+        end
+    end)
+
 
     
     --Pausing and playing the sound
@@ -109,6 +123,7 @@ local MusicPlayer = function(props)
     return {
 
         Sound = Sound,
+        PlaybackLoudness = PlaybackLoudness,
         Skip = Skip,
         Previous = Previous,
         Destroy = function()

@@ -22,24 +22,30 @@ local guiSettings = {
 
 --Creating the DraggableIcon component
 local DraggableIcon = function(props)
-    --Creating the size sring
-    local SizeState = State(props.SizeMin)
-    local SizeSpring = Spring(SizeState, table.unpack(props.SpringSettings))
-
+    
     --Creating the position spring
     local PositionState = State(props.StartPosition)
     local PositionSpring = Spring(PositionState, table.unpack(props.SpringSettings))
     
     --Creating the transparency Spring
     local TransparencySpring = Spring(Computed(function()
-       return props.MainGuiShowing:get() and 0 or 1
+        return props.MainGuiShowing:get() and 0 or 1
     end), 30,.9)
-
+    
     --State to keep track of weather the icon is currently / hovered clicked
     local IsClicked = State(false)
     local IsHovering = State(false)
     local IsHolding = State(false)
 
+    --Creating the size sring
+    local SizeState = State(props.SizeMin)
+    local SizeSpring = Spring(Computed(function()
+        local BlockSize = props.IsPaletteOpen:get() == true or props.IsVolumePanelOn:get() == true or IsHovering:get() == true or IsClicked:get() == true or IsHolding:get() == true
+        local LoudMultiplier = BlockSize == false and math.clamp((props.PlaybackLoudness:get()/150)*.45,.95,1.2) or 1
+        local CurrentSize = SizeState:get()
+        return UDim2.fromScale(CurrentSize.X.Scale*LoudMultiplier,CurrentSize.Y.Scale*LoudMultiplier)
+    end), 30, .9)
+    
     --Function to move the position of the icon to the pos of the mouse
     local function SetPosToMousePosition()
        --Converting the mouse pos to scale
