@@ -67,6 +67,7 @@ local VolumeButton = function(props)
             SizeState:set(props.SizeClicked)
         end,
         [OnEvent "MouseButton1Up"] = function()
+            if IsClicked:get() == false then return end
             IsClicked:set(false)
             
             --Run the OnClick func if it exists
@@ -141,6 +142,7 @@ local DraggableButton = function(props)
     --Volume Adjusting functions
     local function AdjustVolume()
         --Converting the mouse pos to scale
+        -- local MouseX = math.clamp(uis:GetMouseLocation().X / workspace.CurrentCamera.ViewportSize.X,VolumeRange[1],VolumeRange[2])
         local MouseX = math.clamp(uis:GetMouseLocation().X / workspace.CurrentCamera.ViewportSize.X,VolumeRange[1],VolumeRange[2])
 
         --Calculating the new volume
@@ -189,17 +191,19 @@ local DraggableButton = function(props)
                 VolumeAdjuster = runs.RenderStepped:Connect(AdjustVolume)
             end
         end,
-        [OnEvent "MouseButton1Up"] = function()
-            IsClicked:set(false)
-            
-            --Disable the volume adjuster
-            if VolumeAdjuster then
-                VolumeAdjuster:Disconnect()
-                VolumeAdjuster = nil
+        [OnEvent "InputEnded"] = function(InputObject:InputObject)
+            if InputObject.UserInputType == Enum.UserInputType.MouseButton1 then
+                IsClicked:set(false)
+                
+                --Disable the volume adjuster
+                if VolumeAdjuster then
+                    VolumeAdjuster:Disconnect()
+                    VolumeAdjuster = nil
+                end
+                
+                --If the user is still hovering, set it to the hover size
+                SizeState:set(IsHovering:get() == true and props.SizeMax or props.SizeMin)
             end
-            
-            --If the user is still hovering, set it to the hover size
-            SizeState:set(IsHovering:get() == true and props.SizeMax or props.SizeMin)
         end,
 
         --Creating all the children

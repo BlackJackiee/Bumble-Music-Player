@@ -260,7 +260,7 @@ end
 -- return MusicPlayer
 
 
---HoarceKat Setup
+-- HoarceKat Setup
 return function(target)
 
     --Creating the music player
