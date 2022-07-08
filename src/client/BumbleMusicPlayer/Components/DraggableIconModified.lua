@@ -73,6 +73,10 @@ local DraggableIcon = function(props)
                 --Updating the is holding state
                 IsHolding:set(true)
                 
+                --Closing all the extra panels
+                props.IsVolumePanelOn:set(false)
+                props.IsPaletteOpen:set(false)
+
                 --Connecting the position follow func
                 if Connections.MouseFollow == nil then
                     Connections.MouseFollow = runs.RenderStepped:Connect(SetPosToMousePosition)
@@ -131,11 +135,6 @@ local DraggableIcon = function(props)
                 --Getting the new size target
                 local TargetSize = IsHovering:get() == true and props.SizeMax or props.SizeMin
                 TargetSize = IsHolding:get() and props.SizeMin or TargetSize
-                
-                --Run the OnClick func if the ui wasnt dragged
-                if IsHolding:get() == false then
-                    props.OnClick()
-                end
 
                 --If the user is still hovering, set it to the hover size
                 SizeState:set(TargetSize)

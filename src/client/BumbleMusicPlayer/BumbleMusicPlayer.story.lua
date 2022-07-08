@@ -129,8 +129,9 @@ local MusicPlayer = function(props)
         --Spring settings
         SpringSettings = {45,0.8},
         
-        --Setting up the OnClick function
-        OnClick = function() end,
+        --Passing all the required states
+        IsPaletteOpen = IsPaletteOpen,
+        IsVolumePanelOn = IsVolumePanelOn,
         
         --Sizing the icon
         Props = {},

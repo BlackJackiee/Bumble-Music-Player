@@ -142,7 +142,6 @@ local DraggableButton = function(props)
     --Volume Adjusting functions
     local function AdjustVolume()
         --Converting the mouse pos to scale
-        -- local MouseX = math.clamp(uis:GetMouseLocation().X / workspace.CurrentCamera.ViewportSize.X,VolumeRange[1],VolumeRange[2])
         local MouseX = math.clamp(uis:GetMouseLocation().X / workspace.CurrentCamera.ViewportSize.X,VolumeRange[1],VolumeRange[2])
 
         --Calculating the new volume
